@@ -1,2 +1,2 @@
 # hiddenclassesAI
-project for 6.S093
+workshop 1 for 6.S093
