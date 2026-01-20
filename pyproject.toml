@@ -1,0 +1,12 @@
+[project]
+name = "hiddenclassesai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mastodon-py>=2.1.4",
+    "notion-client>=2.7.0",
+    "python-dotenv>=1.2.1",
+    "requests>=2.32.5",
+]
