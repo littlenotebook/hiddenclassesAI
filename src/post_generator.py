@@ -10,7 +10,7 @@ Context:
 Example posts:
 {examples}
 
-Write ONE Mastodon post (max 500 characters), playful, curious, and encouraging.
+Write ONE Mastodon post (max 1000 characters), playful, curious, and encouraging.
 """
     # send prompt to LLM here and return text
     return call_llm(prompt)+f"\n\n⚠️This post was generated using AI."

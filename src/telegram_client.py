@@ -30,7 +30,7 @@ def send_review_message(post_text: str) -> int:
 
 def get_updates(offset=None):
     params = {"timeout": 30}
-    if offset:
+    if offset is not None:
         params["offset"] = offset
     return requests.get(f"{BASE_URL}/getUpdates", params=params).json()
 
@@ -57,7 +57,15 @@ def wait_for_decision():
                 )
 
                 if action == "approve":
+                    requests.post(
+                        f"{BASE_URL}/sendMessage",
+                        json={
+                            "chat_id": CHAT_ID,
+                            "text": "✅ Post approved.",
+                        },
+                    )
                     return {"decision": "approve"}
+                    
 
                 if action == "reject":
                     reason = ask_rejection_reason()
@@ -87,9 +95,7 @@ def ask_rejection_reason() -> str:
         for update in updates.get("result", []):
             last_update_id = update["update_id"] + 1
 
-            if "message" in update:
-                msg = update["message"]
-                if msg.get("text"):
-                    return msg["text"]
+            if "message" in update and update["message"].get("text"):
+                return update["message"]["text"]
 
         time.sleep(1)
