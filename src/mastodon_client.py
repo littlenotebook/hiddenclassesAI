@@ -1,4 +1,5 @@
 from mastodon import Mastodon
+from dotenv import load_dotenv
 import os
 
 mastodon = Mastodon(

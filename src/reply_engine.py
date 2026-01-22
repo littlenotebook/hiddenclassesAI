@@ -198,12 +198,6 @@ def post_reply(response: GeneratedResponse):
         in_reply_to_id=int(response.original_post_id),
     )
 
-
-# ---------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------
-
-
 def main(post_replies: bool = False):
     print("Loading HiddenClasses context from Notion...")
     business_context = get_business_context()

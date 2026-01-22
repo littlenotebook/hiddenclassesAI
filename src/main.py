@@ -4,7 +4,6 @@ from image_gen import generate_image
 from mastodon_client import publish_post
 from telegram_client import send_review_message, wait_for_decision
 
-
 def main():
     # 1. Fetch content
     content, examples = fetch_first_row()
