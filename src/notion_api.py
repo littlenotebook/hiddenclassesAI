@@ -39,6 +39,54 @@ def fetch_first_row():
     return content, examples
 
 
+def fetch_all_pages():
+    """
+    Fetch all rows from the Notion database.
+    Returns a list of dicts with {id, title, content}.
+    """
+
+    url = f"https://api.notion.com/v1/databases/{NOTION_DATABASE_ID}/query"
+    pages = []
+    payload = {}
+
+    while True:
+        res = requests.post(url, headers=HEADERS, json=payload)
+        res.raise_for_status()
+        data = res.json()
+
+        for row in data.get("results", []):
+            props = row.get("properties", {})
+
+            # Adjust property names if yours differ
+            content_prop = props.get("Content", {}).get("rich_text", [])
+            examples_prop = props.get("Example Posts", {}).get("rich_text", [])
+            title_prop = props.get("Name", {}).get("title", [])
+
+            content = " ".join(t["plain_text"] for t in content_prop)
+            examples = " ".join(t["plain_text"] for t in examples_prop)
+            title = " ".join(t["plain_text"] for t in title_prop)
+
+            full_text = "\n".join(
+                part for part in [title, content, examples] if part
+            )
+
+            if full_text.strip():
+                pages.append({
+                    "id": row["id"],
+                    "title": title or "Untitled",
+                    "content": full_text
+                })
+
+        # Pagination
+        if data.get("has_more"):
+            payload["start_cursor"] = data["next_cursor"]
+        else:
+            break
+
+    return pages
+
+
+
 if __name__ == "__main__":
     content, examples = fetch_first_row()
     print("Content:", content)
